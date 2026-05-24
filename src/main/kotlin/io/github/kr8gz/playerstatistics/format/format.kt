@@ -24,7 +24,11 @@ fun formatDistanceText(value: Long): Text {
 
     return literalText(formatUnitString(kilometers to "km", meters to "m", value to "cm")) {
         val hoverText = Text.translatable("playerstatistics.unit.blocks", formatDecimalString(meters))
-        hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+        hoverEvent =
+            //? if <1.21.11 {
+            /*HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+            *///?} else
+            HoverEvent.ShowText(hoverText)
     }
 }
 
@@ -37,7 +41,11 @@ fun formatTimeText(value: Long): Text {
 
     return literalText(formatUnitString(years to "y", days to "d", hours to "h", minutes to "m", seconds to "s")) {
         val hoverText = Text.translatable("playerstatistics.unit.ticks", formatDecimalString(value))
-        hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+        hoverEvent =
+            //? if <1.21.11 {
+            /*HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+            *///?} else
+            HoverEvent.ShowText(hoverText)
     }
 }
 
@@ -45,6 +53,10 @@ fun formatHeartsText(value: Long): Text {
     return literalText(formatDecimalString(value / 20.0)) {
         text(" ❤") { color = config.colors.heart; bold = false }
         val hoverText = Text.translatable("playerstatistics.unit.damage", formatDecimalString(value / 10.0))
-        hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+        hoverEvent =
+            //? if <1.21.11 {
+            /*HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverText)
+            *///?} else
+            HoverEvent.ShowText(hoverText)
     }
 }

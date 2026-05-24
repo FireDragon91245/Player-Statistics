@@ -34,7 +34,11 @@ class MinecraftStatSource(val stat: Stat<*>) : StatSource() {
 
     private fun formatItemText(item: Item) = formatTextWithStatType(item.name.build {
         if (item != Items.AIR) {
-            hoverEvent = HoverEvent(HoverEvent.Action.SHOW_ITEM, HoverEvent.ItemStackContent(item.defaultStack))
+            hoverEvent =
+                //? if <1.21.11 {
+                /*HoverEvent(HoverEvent.Action.SHOW_ITEM, HoverEvent.ItemStackContent(item.defaultStack))
+                *///?} else
+                HoverEvent.ShowItem(item.defaultStack)
         }
     })
 

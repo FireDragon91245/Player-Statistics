@@ -1,7 +1,7 @@
 plugins {
-    id 'fabric-loom' version '1.7-SNAPSHOT'
+    id 'fabric-loom' version '1.13.6'
     id 'maven-publish'
-    id 'org.jetbrains.kotlin.jvm' version '2.0.0-Beta4'
+    id 'org.jetbrains.kotlin.jvm' version '2.2.21'
     id 'me.modmuss50.mod-publish-plugin' version '0.5.1'
 }
 
@@ -32,6 +32,12 @@ repositories {
         }
     }
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
+    maven {
+        url 'https://repo.pauli.fyi/releases/'
+        content {
+            includeGroup 'net.silkmc'
+        }
+    }
     maven { url 'https://maven.nucleoid.xyz' }
 }
 
@@ -50,7 +56,7 @@ dependencies {
     include modImplementation("net.silkmc:silk-commands:${property('deps.silk')}")
 
     // Database
-    modImplementation "maven.modrinth:sqlite-jdbc:${property('deps.sqlite_jdbc')}"
+    modImplementation "maven.modrinth:${property('deps.sqlite_jdbc_module')}:${property('deps.sqlite_jdbc')}"
 
     // Translations
     include modImplementation("xyz.nucleoid:server-translations-api:${property('deps.server_translations')}")
@@ -71,12 +77,12 @@ def targetMCVersions() {
 }
 
 def expandProperties = [
-    "version": project.version,
-    "name": modName,
-    "minecraft_version": targetMCVersions(),
-    "loader_version": property('deps.fabric_loader'),
-    "fabric_kotlin_version": property('deps.fabric_kotlin'),
-    "sqlite_jdbc_version": property('deps.sqlite_jdbc'),
+        "version"              : project.version,
+        "name"                 : modName,
+        "minecraft_version"    : targetMCVersions(),
+        "loader_version"       : property('deps.fabric_loader'),
+        "fabric_kotlin_version": property('deps.fabric_kotlin'),
+        "sqlite_jdbc_version"  : property('deps.sqlite_jdbc'),
 ]
 
 processResources {

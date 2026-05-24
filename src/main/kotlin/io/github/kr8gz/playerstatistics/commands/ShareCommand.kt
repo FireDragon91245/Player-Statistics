@@ -9,7 +9,6 @@ import net.minecraft.text.HoverEvent
 import net.minecraft.text.Text
 import net.minecraft.text.Texts
 import net.silkmc.silk.commands.LiteralCommandBuilder
-import net.silkmc.silk.core.text.broadcastText
 import net.silkmc.silk.core.text.literalText
 import java.util.UUID
 import java.util.concurrent.ConcurrentHashMap
@@ -51,10 +50,14 @@ object ShareCommand : StatsCommand("share") {
             Text.translatable("playerstatistics.command.share.message", sharerName, data.label).build { color = config.colors.text.main }
         }
         val hoverText = Texts.bracketed(Text.translatable("playerstatistics.command.share.hover")).build {
-            hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, data.content)
+            hoverEvent =
+                //? if <1.21.11 {
+                /*HoverEvent(HoverEvent.Action.SHOW_TEXT, data.content)
+                *///?} else
+                HoverEvent.ShowText(data.content)
             color = config.colors.action
         }
-        server.broadcastText(message space hoverText)
+        server.playerManager.broadcast(message space hoverText, false)
 
         data.shared = true
     }

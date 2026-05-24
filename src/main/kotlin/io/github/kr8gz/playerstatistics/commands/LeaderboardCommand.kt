@@ -73,8 +73,18 @@ object LeaderboardCommand : StatsCommand("leaderboard") {
                         command = LeaderboardCommand.formatCommandString(stat.formatCommandArgs(), player)
                     }
 
-                    hoverEvent = hint?.let { HoverEvent(HoverEvent.Action.SHOW_TEXT, it) }
-                    clickEvent = command?.let { ClickEvent(ClickEvent.Action.RUN_COMMAND, it) }
+                    hoverEvent = hint?.let {
+                        //? if <1.21.11 {
+                        /*HoverEvent(HoverEvent.Action.SHOW_TEXT, it)
+                        *///?} else
+                        HoverEvent.ShowText(it)
+                    }
+                    clickEvent = command?.let {
+                        //? if <1.21.11 {
+                        /*ClickEvent(ClickEvent.Action.RUN_COMMAND, it)
+                        *///?} else
+                        ClickEvent.RunCommand(it)
+                    }
                     color = config.colors.name.altIf(isHighlighted)
                 }
                 text(" - ") { bold = false }
@@ -90,7 +100,15 @@ object LeaderboardCommand : StatsCommand("leaderboard") {
     }
 
     fun formatStatNameWithSuggestion(stat: StatSource) = stat.formatNameText().build {
-        hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("playerstatistics.command.leaderboard.hint"))
-        clickEvent = ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, formatCommandString(stat.formatCommandArgs()))
+        hoverEvent =
+            //? if <1.21.11 {
+            /*HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("playerstatistics.command.leaderboard.hint"))
+            *///?} else
+            HoverEvent.ShowText(Text.translatable("playerstatistics.command.leaderboard.hint"))
+        clickEvent =
+            //? if <1.21.11 {
+            /*ClickEvent(ClickEvent.Action.SUGGEST_COMMAND, formatCommandString(stat.formatCommandArgs()))
+            *///?} else
+            ClickEvent.SuggestCommand(formatCommandString(stat.formatCommandArgs()))
     }
 }

@@ -11,8 +11,16 @@ import java.util.UUID
 
 object Components {
     fun shareButton(code: UUID) = Texts.bracketed(Text.translatable("playerstatistics.command.share")).build {
-        hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("playerstatistics.command.share.hint"))
-        clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, ShareCommand.formatCommandString(code))
+        hoverEvent =
+            //? if <1.21.11 {
+            /*HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable("playerstatistics.command.share.hint"))
+            *///?} else
+            HoverEvent.ShowText(Text.translatable("playerstatistics.command.share.hint"))
+        clickEvent =
+            //? if <1.21.11 {
+            /*ClickEvent(ClickEvent.Action.RUN_COMMAND, ShareCommand.formatCommandString(code))
+            *///?} else
+            ClickEvent.RunCommand(ShareCommand.formatCommandString(code))
         color = config.colors.action
     }
 
@@ -22,8 +30,16 @@ object Components {
         fun pageButton(text: String, active: Boolean, newPage: Int, translationKey: String) = text(text) {
             color = config.colors.footer.altIf(active)
             if (active) {
-                hoverEvent = HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(translationKey))
-                clickEvent = ClickEvent(ClickEvent.Action.RUN_COMMAND, PageCommand.formatCommandString(newPage))
+                hoverEvent =
+                    //? if <1.21.11 {
+                    /*HoverEvent(HoverEvent.Action.SHOW_TEXT, Text.translatable(translationKey))
+                    *///?} else
+                    HoverEvent.ShowText(Text.translatable(translationKey))
+                clickEvent =
+                    //? if <1.21.11 {
+                    /*ClickEvent(ClickEvent.Action.RUN_COMMAND, PageCommand.formatCommandString(newPage))
+                    *///?} else
+                    ClickEvent.RunCommand(PageCommand.formatCommandString(newPage))
             }
         }
 

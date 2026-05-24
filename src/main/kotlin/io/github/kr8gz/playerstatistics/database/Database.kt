@@ -99,9 +99,14 @@ object Database {
                 }
 
                 Files.list(statsPath).asSequence().forEach { path ->
-                    val statHandler = ServerStatHandler(server, path.toFile())
-                    // the user cache can only store up to 1000 players by default, but at least it's better than nothing
-                    server.userCache?.getByUuid(statHandler.uuid)?.let { if (it.isPresent) Players.updateProfile(it.get()) }
+                    val statHandler =
+                        //? if <1.21.11 {
+                        /*ServerStatHandler(server, path.toFile())
+                        *///?} else
+                        ServerStatHandler(server, path)
+                    // Since 1.21.11 the old direct user cache access is no longer available here.
+                    // Refresh names when a matching player is currently online; otherwise they will be updated on next join.
+                    server.playerManager.getPlayer(statHandler.uuid)?.gameProfile?.let { Players.updateProfile(it) }
                     Statistics.updateStats(statHandler, changedOnly = false)
 
                     completedFiles.incrementAndGet()
