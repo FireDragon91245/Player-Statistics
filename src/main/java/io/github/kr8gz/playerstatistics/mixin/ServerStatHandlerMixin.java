@@ -8,7 +8,9 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.stat.ServerStatHandler;
 import net.minecraft.stat.Stat;
 import net.minecraft.stat.StatHandler;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,6 +20,11 @@ import java.util.Map;
 
 @Mixin(ServerStatHandler.class)
 public abstract class ServerStatHandlerMixin extends StatHandler implements ServerStatHandlerAccess {
+    //? if >=1.21.11
+    @Shadow @Final private java.nio.file.Path path;
+    //? if <1.21.11
+    // @Shadow @Final private java.io.File file;
+
     @Unique private final Map<Stat<?>, Integer> changedStats = new Object2IntOpenHashMap<>();
 
     @Inject(method = "setStat", at = @At("TAIL"))
@@ -28,6 +35,14 @@ public abstract class ServerStatHandlerMixin extends StatHandler implements Serv
     @Inject(method = "save()V", at = @At("HEAD"))
     private void save(CallbackInfo ci) {
         Statistics.launchStatsUpdate((ServerStatHandler) (Object) this);
+    }
+
+    @Override
+    public String getStatsFileName() {
+        //? if >=1.21.11
+        return path.getFileName().toString();
+        //? if <1.21.11
+        // return file.getName();
     }
 
     @Override
